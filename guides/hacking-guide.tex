@@ -97,14 +97,39 @@ brew install avr-libc git
 
 \subsection{Récupérer le firmware}
 
+Le firmware tmk\_keyboard est hébergé sur Github, pour le télécharger nous allons utiliser Git dans le terminal :
 
+\begin{verbatim}
+git clone https://github.com/tmk/tmk_keyboard
+\end{verbatim}
+
+Ensuite il faut se déplacer jusqu'au dossier contenant les sources du firmware du convertisseur ADB/USB :
+
+\begin{verbatim}
+cd tmk_keyboard/converter/adb_usb/
+\end{verbatim}
 
 \subsection{La compilation}
 
-jopoj
+La compilation s'effectue avec la commande \textbf{make} :
+
+\begin{verbatim}
+make KEYMAP=iso
+\end{verbatim}
+
+Je précise \textbf{KEYMAP=iso} car l'adaptateur est adapté aux claviers européens. Si vous ne précisez pas le mapping au Makefile, le firmware sera adapté pour les claviers ANSI (américains).
+Vous aurez alors un fichier nommé \textbf{adb\_usb\_lufa.hex}, qui contiendra le firmware compilé. Vous pouvez à présent le flasher à l'aide d'avrdude :
+
+\begin{verbatim}
+avrdude -c usbasp -p m32u4 -U flash:w:adb_usb_lufa.hex
+\end{verbatim}
 
 \subsection{Modifier l'agencement des touches}
 
-fezfze
+Pour modifier l'agencement des touches, nous allons devoir toucher au code source de tmk\_keyboard, en particulier au fichier \textbf{keymap\_iso.c} qui contient le mapping du clavier en ISO.
+
+Chaque touche du clavier est représentée dans ce fichier. Si vous voulez modifier la fonctionnalité d'une touche, il vous suffit de modifier la touche dans ce fichier par une autre touche, de recompiler le firmware et de flasher l'adaptateur.
+
+Par exemple
 
 \end{document}
