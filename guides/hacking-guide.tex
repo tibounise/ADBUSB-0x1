@@ -126,10 +126,37 @@ avrdude -c usbasp -p m32u4 -U flash:w:adb_usb_lufa.hex
 
 \subsection{Modifier l'agencement des touches}
 
-Pour modifier l'agencement des touches, nous allons devoir toucher au code source de tmk\_keyboard, en particulier au fichier \textbf{keymap\_iso.c} qui contient le mapping du clavier en ISO.
+Pour modifier l'agencement des touches, nous allons devoir toucher au code source de tmk\_keyboard, en particulier au fichier \textbf{keymap\_iso.c} (situé dans \textbf{/tmk\_keyboard/converter/adb\_usb/}) qui contient le mapping du clavier en ISO.
 
-Chaque touche du clavier est représentée dans ce fichier. Si vous voulez modifier la fonctionnalité d'une touche, il vous suffit de modifier la touche dans ce fichier par une autre touche, de recompiler le firmware et de flasher l'adaptateur.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{keymap_iso.png}
+    \caption{Le fichier keymap\_iso.c par défaut}
+    \label{fig:4}
+\end{figure}
 
-Par exemple
+\FloatBarrier
+
+Chaque touche physique du clavier est assignée à un code (par exemple \textbf{LCTL} pour la touche contrôle gauche). Il est possible de modifier le code d'une touche, pour lui assigner une autre fonctionnalité.
+
+Par exemple, si je veux assigner la touche shift droite à la fonction espace, je devrai remplacer \textbf{RSFT} par \textbf{SPC}.
+
+Il me suffira ensuite de re-compiler le firmware à l'aide des instructions ci-dessus, et de flasher mon firmware personnalisé.
+\\[12pt]
+
+Il existe quelques codes intéressants, par exemple ceux des touches multimédias :
+
+\begin{verbatim}
+AUDIO_MUTE : coupe le son
+AUDIO_VOL_UP : augmente le volume
+AUDIO_VOL_DOWN : baisse le volume
+MEDIA_NEXT_TRACK : joue le média suivante
+MEDIA_PREV_TRACK : joue le média précédent
+MEDIA_STOP : arrête toute lecture de média
+MEDIA_PLAY_PAUSE : met en pause le média
+MEDIA_EJECT : éjection
+\end{verbatim}
+
+Une liste détaillée de tous les codes intéressants se trouve dans le fichier \textbf{keycode.h} (situé dans \textbf{/tmk\_keyboard/common/}). N'oubliez pas d'enlever le préfixe \textbf{KC\_} pour utiliser le code de touche dans votre \textbf{keymap\_iso.c} !
 
 \end{document}
